@@ -1,0 +1,31 @@
+stages:
+  prepare_data:
+    cmd: python src/data_preparation.py
+    deps:
+      - src/data_preparation.py
+      - data/raw/train.csv
+      - data/raw/test.csv
+    outs:
+      - data/processed/cleaned_data.csv
+
+  retrain_model:
+    cmd: python src/retraining/retrain_pipeline.py
+    deps:
+      - src/retraining/retrain_pipeline.py
+      - data/processed/cleaned_data.csv
+      - params.yaml
+    outs:
+      - models/model.pkl
+      - models/metrics.json
+      - logs/retrain_logs.log
+
+  monitor_drift:
+    cmd: python src/drift/drift_detection.py
+    deps:
+      - src/drift/drift_detection.py
+      - data/processed/cleaned_data.csv
+      - models/model.pkl
+    outs:
+      - logs/drift_logs.log
+      - reports/data_drift_report.html
+      - reports/drift_summary.json
