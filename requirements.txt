@@ -10,6 +10,7 @@ dvc
 fastapi
 uvicorn
 streamlit
+streamlit-autorefresh
 python-dotenv
 requests
 slack_sdk
