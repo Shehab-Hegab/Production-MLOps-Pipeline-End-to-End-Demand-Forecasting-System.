@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Futuristic AI Operations Dashboard - Deep Space Fusion MLOps Control Center">
+    <title>AI Operations Dashboard | MLOps Control Center</title>
+    <link rel="stylesheet" href="dashboard-styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="cosmic-bg">
+        <canvas id="particleCanvas"></canvas>
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="dashboard-container">
+
+        <!-- Top Navigation Glass Bar -->
+        <nav class="glass-nav" id="mainNav">
+            <div class="nav-content">
+                <div class="nav-brand">
+                    <div class="brand-icon pulse-glow">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <path d="M20 5L35 15V25L20 35L5 25V15L20 5Z" stroke="url(#brandGradient)" stroke-width="2"
+                                fill="url(#brandFill)" />
+                            <circle cx="20" cy="20" r="3" fill="#00F0FF" />
+                            <defs>
+                                <linearGradient id="brandGradient" x1="5" y1="5" x2="35" y2="35">
+                                    <stop offset="0%" stop-color="#8B5CF6" />
+                                    <stop offset="100%" stop-color="#00F0FF" />
+                                </linearGradient>
+                                <linearGradient id="brandFill" x1="5" y1="5" x2="35" y2="35">
+                                    <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.2" />
+                                    <stop offset="100%" stop-color="#00F0FF" stop-opacity="0.1" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <h1 class="dynamic-title" id="mainTitle">AI OPERATIONS</h1>
+                        <span class="brand-subtitle">Deep Space Fusion Control Center</span>
+                    </div>
+                </div>
+
+                <div class="nav-controls">
+                    <div class="status-indicator active">
+                        <span class="status-dot"></span>
+                        <span class="status-text">SYSTEM ONLINE</span>
+                    </div>
+                    <div class="nav-time" id="navTime">00:00:00</div>
+                    <button class="control-btn" id="settingsBtn">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10 6a4 4 0 100 8 4 4 0 000-8zM8 10a2 2 0 114 0 2 2 0 01-4 0z" />
+                            <path
+                                d="M10.5 1a1 1 0 00-1 0l-1.5.87a1 1 0 01-1.37-.37L6 .63a1 1 0 00-1.37-.37l-1.5.87a1 1 0 00-.37 1.37l.63 1.13a1 1 0 01-.37 1.37l-1.5.87a1 1 0 000 1.73l1.5.87a1 1 0 01.37 1.37l-.63 1.13a1 1 0 00.37 1.37l1.5.87a1 1 0 001.37-.37l.63-1.13a1 1 0 011.37-.37l1.5.87a1 1 0 001 0l1.5-.87a1 1 0 011.37.37l.63 1.13a1 1 0 001.37.37l1.5-.87a1 1 0 00.37-1.37l-.63-1.13a1 1 0 01.37-1.37l1.5-.87a1 1 0 000-1.73l-1.5-.87a1 1 0 01-.37-1.37l.63-1.13a1 1 0 00-.37-1.37l-1.5-.87a1 1 0 00-1.37.37l-.63 1.13a1 1 0 01-1.37.37L10.5 1z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Tab Navigation -->
+        <div class="tab-container glass-panel">
+            <div class="tab-wrapper">
+                <button class="tab-btn active" data-tab="overview">
+                    <span class="tab-icon">📊</span>
+                    <span class="tab-label">Overview</span>
+                    <span class="tab-glow"></span>
+                </button>
+                <button class="tab-btn" data-tab="lineage">
+                    <span class="tab-icon">🔗</span>
+                    <span class="tab-label">Model Lineage</span>
+                    <span class="tab-glow"></span>
+                </button>
+                <button class="tab-btn" data-tab="drift">
+                    <span class="tab-icon">📉</span>
+                    <span class="tab-label">Data Drift</span>
+                    <span class="tab-glow"></span>
+                </button>
+                <button class="tab-btn" data-tab="pipeline">
+                    <span class="tab-icon">⚙️</span>
+                    <span class="tab-label">Pipeline Orchestration</span>
+                    <span class="tab-glow"></span>
+                </button>
+                <button class="tab-btn" data-tab="resources">
+                    <span class="tab-icon">💻</span>
+                    <span class="tab-label">Resource Metrics</span>
+                    <span class="tab-glow"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="content-container">
+
+            <!-- Overview Tab -->
+            <div class="tab-content active" id="overview">
+                <div class="section-header">
+                    <h2 class="section-title dynamic-title">Mission Control Overview</h2>
+                    <p class="section-subtitle">Real-time MLOps Intelligence Dashboard</p>
+                </div>
+
+                <div class="grid-layout grid-3">
+                    <!-- KPI Cards -->
+                    <div class="glass-card kpi-card" data-color="violet">
+                        <div class="card-header">
+                            <span class="card-icon">🎯</span>
+                            <h3 class="card-title dynamic-title">Model Accuracy</h3>
+                        </div>
+                        <div class="kpi-value">
+                            <span class="value-number" data-target="94.7">0</span>
+                            <span class="value-unit">%</span>
+                        </div>
+                        <div class="kpi-trend positive">
+                            <span class="trend-arrow">↑</span>
+                            <span class="trend-value">2.3% from last week</span>
+                        </div>
+                        <div class="mini-chart" id="accuracyChart"></div>
+                    </div>
+
+                    <div class="glass-card kpi-card" data-color="cyan">
+                        <div class="card-header">
+                            <span class="card-icon">⚡</span>
+                            <h3 class="card-title dynamic-title">Inference Speed</h3>
+                        </div>
+                        <div class="kpi-value">
+                            <span class="value-number" data-target="28">0</span>
+                            <span class="value-unit">ms</span>
+                        </div>
+                        <div class="kpi-trend positive">
+                            <span class="trend-arrow">↓</span>
+                            <span class="trend-value">15% faster</span>
+                        </div>
+                        <div class="mini-chart" id="speedChart"></div>
+                    </div>
+
+                    <div class="glass-card kpi-card" data-color="purple">
+                        <div class="card-header">
+                            <span class="card-icon">📦</span>
+                            <h3 class="card-title dynamic-title">Active Models</h3>
+                        </div>
+                        <div class="kpi-value">
+                            <span class="value-number" data-target="12">0</span>
+                            <span class="value-unit">models</span>
+                        </div>
+                        <div class="kpi-trend neutral">
+                            <span class="trend-arrow">→</span>
+                            <span class="trend-value">Stable deployment</span>
+                        </div>
+                        <div class="mini-chart" id="modelsChart"></div>
+                    </div>
+                </div>
+
+                <div class="grid-layout grid-2">
+                    <!-- Performance Chart -->
+                    <div class="glass-card chart-card">
+                        <div class="card-header">
+                            <h3 class="card-title dynamic-title">Performance Telemetry</h3>
+                            <div class="chart-controls">
+                                <select class="control-select" id="perfTimeRange">
+                                    <option value="24h">Last 24 Hours</option>
+                                    <option value="7d">Last 7 Days</option>
+                                    <option value="30d">Last 30 Days</option>
+                                </select>
+                                <div class="color-picker-btn" data-chart="performance">
+                                    <span class="color-swatch"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <canvas id="performanceChart" class="glow-chart"></canvas>
+                    </div>
+
+                    <!-- System Health -->
+                    <div class="glass-card chart-card">
+                        <div class="card-header">
+                            <h3 class="card-title dynamic-title">System Health Matrix</h3>
+                            <div class="chart-controls">
+                                <div class="color-picker-btn" data-chart="health">
+                                    <span class="color-swatch"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="health-grid">
+                            <div class="health-item">
+                                <div class="health-label">API Gateway</div>
+                                <div class="health-bar">
+                                    <div class="health-fill" style="width: 98%;" data-status="excellent"></div>
+                                </div>
+                                <div class="health-value">98%</div>
+                            </div>
+                            <div class="health-item">
+                                <div class="health-label">Model Registry</div>
+                                <div class="health-bar">
+                                    <div class="health-fill" style="width: 95%;" data-status="excellent"></div>
+                                </div>
+                                <div class="health-value">95%</div>
+                            </div>
+                            <div class="health-item">
+                                <div class="health-label">Data Pipeline</div>
+                                <div class="health-bar">
+                                    <div class="health-fill" style="width: 89%;" data-status="good"></div>
+                                </div>
+                                <div class="health-value">89%</div>
+                            </div>
+                            <div class="health-item">
+                                <div class="health-label">Training Cluster</div>
+                                <div class="health-bar">
+                                    <div class="health-fill" style="width: 92%;" data-status="excellent"></div>
+                                </div>
+                                <div class="health-value">92%</div>
+                            </div>
+                            <div class="health-item">
+                                <div class="health-label">Monitoring Stack</div>
+                                <div class="health-bar">
+                                    <div class="health-fill" style="width: 100%;" data-status="excellent"></div>
+                                </div>
+                                <div class="health-value">100%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project File Analysis -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h3 class="card-title dynamic-title">Project Architecture Analysis</h3>
+                        <div class="chart-controls">
+                            <button class="action-btn" id="scanProjectBtn">
+                                <span>🔍</span> Deep Scan
+                            </button>
+                        </div>
+                    </div>
+                    <div class="file-tree" id="fileTree">
+                        <div class="tree-node">
+                            <div class="node-header" data-expanded="true">
+                                <span class="node-icon">📁</span>
+                                <span class="node-name">retail-demand-forecasting-mlops-main</span>
+                                <span class="node-badge">34 items</span>
+                            </div>
+                            <div class="node-children">
+                                <div class="tree-node">
+                                    <div class="node-header">
+                                        <span class="node-icon">📄</span>
+                                        <span class="node-name">dvc.yaml</span>
+                                        <span class="node-meta">Pipeline Config</span>
+                                    </div>
+                                </div>
+                                <div class="tree-node">
+                                    <div class="node-header">
+                                        <span class="node-icon">📄</span>
+                                        <span class="node-name">params.yaml</span>
+                                        <span class="node-meta">Parameters</span>
+                                    </div>
+                                </div>
+                                <div class="tree-node">
+                                    <div class="node-header">
+                                        <span class="node-icon">🐳</span>
+                                        <span class="node-name">docker-compose.yml</span>
+                                        <span class="node-meta">Container Orchestration</span>
+                                    </div>
+                                </div>
+                                <div class="tree-node">
+                                    <div class="node-header">
+                                        <span class="node-icon">📊</span>
+                                        <span class="node-name">prometheus.yml</span>
+                                        <span class="node-meta">Monitoring Config</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Model Lineage Tab -->
+            <div class="tab-content" id="lineage">
+                <div class="section-header">
+                    <h2 class="section-title dynamic-title">Model Lineage & Provenance</h2>
+                    <p class="section-subtitle">End-to-end model genealogy visualization</p>
+                </div>
+
+                <div class="glass-card full-height">
+                    <div class="card-header">
+                        <h3 class="card-title dynamic-title">Interactive Lineage Graph</h3>
+                        <div class="chart-controls">
+                            <select class="control-select">
+                                <option>All Models</option>
+                                <option>Demand Forecasting</option>
+                                <option>Price Optimization</option>
+                            </select>
+                            <div class="color-picker-btn" data-chart="lineage">
+                                <span class="color-swatch"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lineage-canvas" id="lineageCanvas">
+                        <!-- SVG Lineage Graph -->
+                        <svg id="lineageGraph" width="100%" height="600">
+                            <defs>
+                                <linearGradient id="lineageGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#8B5CF6" />
+                                    <stop offset="100%" stop-color="#00F0FF" />
+                                </linearGradient>
+                                <filter id="glow">
+                                    <feGaussianBlur stdDeviation="4" result="coloredBlur" />
+                                    <feMerge>
+                                        <feMergeNode in="coloredBlur" />
+                                        <feMergeNode in="SourceGraphic" />
+                                    </feMerge>
+                                </filter>
+                            </defs>
+
+                            <!-- Data Ingestion Node -->
+                            <g class="lineage-node" transform="translate(100, 100)">
+                                <circle cx="0" cy="0" r="30" fill="url(#lineageGradient1)" filter="url(#glow)" />
+                                <text x="0" y="5" text-anchor="middle" fill="white" font-size="12">📥</text>
+                                <text x="0" y="50" text-anchor="middle" fill="#00F0FF" font-size="11">Data
+                                    Ingestion</text>
+                            </g>
+
+                            <!-- Feature Engineering Node -->
+                            <g class="lineage-node" transform="translate(300, 100)">
+                                <circle cx="0" cy="0" r="30" fill="url(#lineageGradient1)" filter="url(#glow)" />
+                                <text x="0" y="5" text-anchor="middle" fill="white" font-size="12">⚙️</text>
+                                <text x="0" y="50" text-anchor="middle" fill="#00F0FF" font-size="11">Feature
+                                    Eng.</text>
+                            </g>
+
+                            <!-- Model Training Node -->
+                            <g class="lineage-node" transform="translate(500, 100)">
+                                <circle cx="0" cy="0" r="30" fill="url(#lineageGradient1)" filter="url(#glow)" />
+                                <text x="0" y="5" text-anchor="middle" fill="white" font-size="12">🧠</text>
+                                <text x="0" y="50" text-anchor="middle" fill="#00F0FF" font-size="11">Training</text>
+                            </g>
+
+                            <!-- Model Validation Node -->
+                            <g class="lineage-node" transform="translate(700, 100)">
+                                <circle cx="0" cy="0" r="30" fill="url(#lineageGradient1)" filter="url(#glow)" />
+                                <text x="0" y="5" text-anchor="middle" fill="white" font-size="12">✓</text>
+                                <text x="0" y="50" text-anchor="middle" fill="#00F0FF" font-size="11">Validation</text>
+                            </g>
+
+                            <!-- Model Deployment Node -->
+                            <g class="lineage-node" transform="translate(900, 100)">
+                                <circle cx="0" cy="0" r="30" fill="url(#lineageGradient1)" filter="url(#glow)" />
+                                <text x="0" y="5" text-anchor="middle" fill="white" font-size="12">🚀</text>
+                                <text x="0" y="50" text-anchor="middle" fill="#00F0FF" font-size="11">Deployment</text>
+                            </g>
+
+                            <!-- Connection Lines -->
+                            <line x1="130" y1="100" x2="270" y2="100" stroke="url(#lineageGradient1)" stroke-width="2"
+                                class="lineage-edge" />
+                            <line x1="330" y1="100" x2="470" y2="100" stroke="url(#lineageGradient1)" stroke-width="2"
+                                class="lineage-edge" />
+                            <line x1="530" y1="100" x2="670" y2="100" stroke="url(#lineageGradient1)" stroke-width="2"
+                                class="lineage-edge" />
+                            <line x1="730" y1="100" x2="870" y2="100" stroke="url(#lineageGradient1)" stroke-width="2"
+                                class="lineage-edge" />
+
+                            <!-- Version Branches -->
+                            <g class="lineage-node" transform="translate(500, 250)">
+                                <circle cx="0" cy="0" r="25" fill="#1e1e2e" stroke="#8B5CF6" stroke-width="2" />
+                                <text x="0" y="5" text-anchor="middle" fill="#8B5CF6" font-size="10">v1.0</text>
+                                <text x="0" y="45" text-anchor="middle" fill="#666" font-size="10">March 2024</text>
+                            </g>
+                            <line x1="500" y1="130" x2="500" y2="225" stroke="#8B5CF6" stroke-width="2"
+                                stroke-dasharray="5,5" />
+
+                            <g class="lineage-node" transform="translate(500, 350)">
+                                <circle cx="0" cy="0" r="25" fill="#1e1e2e" stroke="#00F0FF" stroke-width="2" />
+                                <text x="0" y="5" text-anchor="middle" fill="#00F0FF" font-size="10">v2.0</text>
+                                <text x="0" y="45" text-anchor="middle" fill="#666" font-size="10">June 2024</text>
+                            </g>
+                            <line x1="500" y1="275" x2="500" y2="325" stroke="#00F0FF" stroke-width="2"
+                                stroke-dasharray="5,5" />
+                        </svg>
+                    </div>
+
+                    <div class="lineage-metadata">
+                        <div class="metadata-grid">
+                            <div class="metadata-item">
+                                <span class="meta-label">Created By:</span>
+                                <span class="meta-value">MLOps Pipeline</span>
+                            </div>
+                            <div class="metadata-item">
+                                <span class="meta-label">Framework:</span>
+                                <span class="meta-value">TensorFlow 2.14</span>
+                            </div>
+                            <div class="metadata-item">
+                                <span class="meta-label">Dataset Version:</span>
+                                <span class="meta-value">v3.2.1</span>
+                            </div>
+                            <div class="metadata-item">
+                                <span class="meta-label">Training Duration:</span>
+                                <span class="meta-value">2h 34m</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Drift Tab -->
+            <div class="tab-content" id="drift">
+                <div class="section-header">
+                    <h2 class="section-title dynamic-title">Data Drift Detection</h2>
+                    <p class="section-subtitle">Real-time distribution shift analysis</p>
+                </div>
+
+                <div class="grid-layout grid-3">
+                    <div class="glass-card metric-card">
+                        <div class="metric-icon drift-low">📊</div>
+                        <div class="metric-label">Population Stability</div>
+                        <div class="metric-value">0.089</div>
+                        <div class="metric-status status-good">Stable</div>
+                    </div>
+                    <div class="glass-card metric-card">
+                        <div class="metric-icon drift-medium">⚠️</div>
+                        <div class="metric-label">Feature Drift Score</div>
+                        <div class="metric-value">0.234</div>
+                        <div class="metric-status status-warning">Monitor</div>
+                    </div>
+                    <div class="glass-card metric-card">
+                        <div class="metric-icon drift-low">✓</div>
+                        <div class="metric-label">Concept Drift</div>
+                        <div class="metric-value">0.012</div>
+                        <div class="metric-status status-good">No Drift</div>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h3 class="card-title dynamic-title">Feature Distribution Analysis</h3>
+                        <div class="chart-controls">
+                            <select class="control-select">
+                                <option>All Features</option>
+                                <option>Price</option>
+                                <option>Quantity</option>
+                                <option>Season</option>
+                            </select>
+                            <div class="color-picker-btn" data-chart="drift">
+                                <span class="color-swatch"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <canvas id="driftChart" class="glow-chart"></canvas>
+                </div>
+
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h3 class="card-title dynamic-title">Drift Alert Timeline</h3>
+                    </div>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-marker status-good"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-time">2 hours ago</div>
+                                <div class="timeline-title">Drift Check Passed</div>
+                                <div class="timeline-desc">All features within acceptable range</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker status-warning"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-time">6 hours ago</div>
+                                <div class="timeline-title">Minor Drift Detected</div>
+                                <div class="timeline-desc">Feature 'store_location' showing mild variance</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker status-good"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-time">12 hours ago</div>
+                                <div class="timeline-title">Drift Check Passed</div>
+                                <div class="timeline-desc">Distributions aligned with baseline</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pipeline Orchestration Tab -->
+            <div class="tab-content" id="pipeline">
+                <div class="section-header">
+                    <h2 class="section-title dynamic-title">Pipeline Orchestration</h2>
+                    <p class="section-subtitle">DVC/MLflow workflow visualization</p>
+                </div>
+
+                <div class="grid-layout grid-2">
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <h3 class="card-title dynamic-title">Active Pipelines</h3>
+                            <button class="action-btn">
+                                <span>▶</span> Run Pipeline
+                            </button>
+                        </div>
+                        <div class="pipeline-list">
+                            <div class="pipeline-item status-running">
+                                <div class="pipeline-header">
+                                    <div class="pipeline-icon">🔄</div>
+                                    <div class="pipeline-info">
+                                        <div class="pipeline-name">Retail Demand Training</div>
+                                        <div class="pipeline-meta">Started 45m ago</div>
+                                    </div>
+                                    <div class="pipeline-status">
+                                        <div class="status-badge running">Running</div>
+                                    </div>
+                                </div>
+                                <div class="pipeline-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 67%;"></div>
+                                    </div>
+                                    <div class="progress-text">Step 4/6: Model Training</div>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-item status-success">
+                                <div class="pipeline-header">
+                                    <div class="pipeline-icon">✓</div>
+                                    <div class="pipeline-info">
+                                        <div class="pipeline-name">Data Validation</div>
+                                        <div class="pipeline-meta">Completed 2h ago</div>
+                                    </div>
+                                    <div class="pipeline-status">
+                                        <div class="status-badge success">Success</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pipeline-item status-pending">
+                                <div class="pipeline-header">
+                                    <div class="pipeline-icon">⏸</div>
+                                    <div class="pipeline-info">
+                                        <div class="pipeline-name">Model Deployment</div>
+                                        <div class="pipeline-meta">Scheduled in 1h</div>
+                                    </div>
+                                    <div class="pipeline-status">
+                                        <div class="status-badge pending">Pending</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <h3 class="card-title dynamic-title">Pipeline DAG Visualization</h3>
+                        </div>
+                        <div class="dag-container">
+                            <svg width="100%" height="400" viewBox="0 0 400 400">
+                                <defs>
+                                    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3"
+                                        orient="auto">
+                                        <polygon points="0 0, 10 3, 0 6" fill="#8B5CF6" />
+                                    </marker>
+                                </defs>
+
+                                <!-- Stage 1: Data Prep -->
+                                <g transform="translate(50, 50)">
+                                    <rect width="80" height="40" rx="8" fill="#1e1e2e" stroke="#8B5CF6"
+                                        stroke-width="2" />
+                                    <text x="40" y="25" text-anchor="middle" fill="#8B5CF6" font-size="12">Data
+                                        Prep</text>
+                                </g>
+
+                                <!-- Stage 2: Feature Eng -->
+                                <g transform="translate(50, 150)">
+                                    <rect width="80" height="40" rx="8" fill="#1e1e2e" stroke="#8B5CF6"
+                                        stroke-width="2" />
+                                    <text x="40" y="25" text-anchor="middle" fill="#8B5CF6"
+                                        font-size="12">Features</text>
+                                </g>
+
+                                <!-- Stage 3: Training -->
+                                <g transform="translate(200, 100)">
+                                    <rect width="80" height="40" rx="8" fill="#1e1e2e" stroke="#00F0FF"
+                                        stroke-width="2" />
+                                    <text x="40" y="25" text-anchor="middle" fill="#00F0FF"
+                                        font-size="12">Training</text>
+                                </g>
+
+                                <!-- Stage 4: Evaluation -->
+                                <g transform="translate(320, 100)">
+                                    <rect width="80" height="40" rx="8" fill="#1e1e2e" stroke="#8B5CF6"
+                                        stroke-width="2" />
+                                    <text x="40" y="25" text-anchor="middle" fill="#8B5CF6"
+                                        font-size="12">Evaluation</text>
+                                </g>
+
+                                <!-- Arrows -->
+                                <line x1="90" y1="90" x2="90" y2="140" stroke="#8B5CF6" stroke-width="2"
+                                    marker-end="url(#arrowhead)" />
+                                <line x1="130" y1="70" x2="190" y2="120" stroke="#8B5CF6" stroke-width="2"
+                                    marker-end="url(#arrowhead)" />
+                                <line x1="130" y1="170" x2="190" y2="120" stroke="#8B5CF6" stroke-width="2"
+                                    marker-end="url(#arrowhead)" />
+                                <line x1="280" y1="120" x2="310" y2="120" stroke="#8B5CF6" stroke-width="2"
+                                    marker-end="url(#arrowhead)" />
+                            </svg>
+                        </div>
+                        <div class="dag-legend">
+                            <div class="legend-item">
+                                <span class="legend-color" style="background: #8B5CF6;"></span>
+                                <span class="legend-label">Completed</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color" style="background: #00F0FF;"></span>
+                                <span class="legend-label">In Progress</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h3 class="card-title dynamic-title">Execution History</h3>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Pipeline ID</th>
+                                    <th>Started</th>
+                                    <th>Duration</th>
+                                    <th>Status</th>
+                                    <th>Triggered By</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>pipe-7f8a9</code></td>
+                                    <td>2024-12-29 18:45 UTC</td>
+                                    <td>45m 23s</td>
+                                    <td><span class="status-badge running">Running</span></td>
+                                    <td>Schedule</td>
+                                    <td><button class="action-btn-sm">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td><code>pipe-6e7b8</code></td>
+                                    <td>2024-12-29 14:20 UTC</td>
+                                    <td>1h 12m</td>
+                                    <td><span class="status-badge success">Success</span></td>
+                                    <td>Manual</td>
+                                    <td><button class="action-btn-sm">View</button></td>
+                                </tr>
+                                <tr>
+                                    <td><code>pipe-5d6c7</code></td>
+                                    <td>2024-12-29 10:15 UTC</td>
+                                    <td>58m 47s</td>
+                                    <td><span class="status-badge success">Success</span></td>
+                                    <td>CI/CD</td>
+                                    <td><button class="action-btn-sm">View</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resource Metrics Tab -->
+            <div class="tab-content" id="resources">
+                <div class="section-header">
+                    <h2 class="section-title dynamic-title">Resource Metrics & Telemetry</h2>
+                    <p class="section-subtitle">Infrastructure performance monitoring</p>
+                </div>
+
+                <div class="grid-layout grid-4">
+                    <div class="glass-card resource-card">
+                        <div class="resource-icon">🖥️</div>
+                        <div class="resource-label">CPU Usage</div>
+                        <div class="resource-value">
+                            <span class="value-number">67</span>
+                            <span class="value-unit">%</span>
+                        </div>
+                        <div class="resource-mini-chart">
+                            <canvas id="cpuMiniChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="glass-card resource-card">
+                        <div class="resource-icon">💾</div>
+                        <div class="resource-label">Memory</div>
+                        <div class="resource-value">
+                            <span class="value-number">45.2</span>
+                            <span class="value-unit">GB</span>
+                        </div>
+                        <div class="resource-mini-chart">
+                            <canvas id="memMiniChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="glass-card resource-card">
+                        <div class="resource-icon">🎮</div>
+                        <div class="resource-label">GPU Compute</div>
+                        <div class="resource-value">
+                            <span class="value-number">82</span>
+                            <span class="value-unit">%</span>
+                        </div>
+                        <div class="resource-mini-chart">
+                            <canvas id="gpuMiniChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="glass-card resource-card">
+                        <div class="resource-icon">🌐</div>
+                        <div class="resource-label">Network I/O</div>
+                        <div class="resource-value">
+                            <span class="value-number">234</span>
+                            <span class="value-unit">Mbps</span>
+                        </div>
+                        <div class="resource-mini-chart">
+                            <canvas id="netMiniChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <div class="card-header">
+                        <h3 class="card-title dynamic-title">3D Cluster Topology</h3>
+                        <div class="chart-controls">
+                            <button class="action-btn" id="rotate3D">
+                                <span>🔄</span> Rotate
+                            </button>
+                            <div class="color-picker-btn" data-chart="topology">
+                                <span class="color-swatch"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="topology-3d" id="topology3D">
+                        <canvas id="topologyCanvas"></canvas>
+                    </div>
+                </div>
+
+                <div class="grid-layout grid-2">
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <h3 class="card-title dynamic-title">Container Resources</h3>
+                        </div>
+                        <div class="container-list">
+                            <div class="container-item">
+                                <div class="container-header">
+                                    <span class="container-icon">🐳</span>
+                                    <span class="container-name">mlflow-server</span>
+                                    <span class="container-status active">Active</span>
+                                </div>
+                                <div class="container-metrics">
+                                    <div class="metric">
+                                        <span class="metric-label">CPU:</span>
+                                        <span class="metric-value">23%</span>
+                                    </div>
+                                    <div class="metric">
+                                        <span class="metric-label">MEM:</span>
+                                        <span class="metric-value">2.1 GB</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="container-item">
+                                <div class="container-header">
+                                    <span class="container-icon">🐳</span>
+                                    <span class="container-name">prometheus</span>
+                                    <span class="container-status active">Active</span>
+                                </div>
+                                <div class="container-metrics">
+                                    <div class="metric">
+                                        <span class="metric-label">CPU:</span>
+                                        <span class="metric-value">12%</span>
+                                    </div>
+                                    <div class="metric">
+                                        <span class="metric-label">MEM:</span>
+                                        <span class="metric-value">1.8 GB</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="container-item">
+                                <div class="container-header">
+                                    <span class="container-icon">🐳</span>
+                                    <span class="container-name">grafana</span>
+                                    <span class="container-status active">Active</span>
+                                </div>
+                                <div class="container-metrics">
+                                    <div class="metric">
+                                        <span class="metric-label">CPU:</span>
+                                        <span class="metric-value">8%</span>
+                                    </div>
+                                    <div class="metric">
+                                        <span class="metric-label">MEM:</span>
+                                        <span class="metric-value">892 MB</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <h3 class="card-title dynamic-title">Cost Analysis</h3>
+                        </div>
+                        <canvas id="costChart" class="glow-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer
+        style="text-align: center; color: rgba(224, 224, 224, 0.5); font-size: 0.75rem; padding: 2rem 0; font-family: 'Inter', sans-serif;">
+        🚀 Deep Space Fusion MLOps Dashboard | Built with ❤️ by Shehab Hegab | v1.0.0
+    </footer>
+
+    <!-- Color Picker Modal -->
+    <div class="modal" id="colorPickerModal">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h3 class="modal-title dynamic-title">Customize Chart Colors</h3>
+                <button class="modal-close" id="closeColorPicker">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="color-options">
+                    <div class="color-option" data-scheme="violet">
+                        <div class="color-preview" style="background: linear-gradient(135deg, #8B5CF6, #6366F1);"></div>
+                        <span class="color-name">Electric Violet</span>
+                    </div>
+                    <div class="color-option" data-scheme="cyan">
+                        <div class="color-preview" style="background: linear-gradient(135deg, #00F0FF, #0EA5E9);"></div>
+                        <span class="color-name">Neon Cyan</span>
+                    </div>
+                    <div class="color-option" data-scheme="purple">
+                        <div class="color-preview" style="background: linear-gradient(135deg, #A855F7, #EC4899);"></div>
+                        <span class="color-name">Deep Purple</span>
+                    </div>
+                    <div class="color-option" data-scheme="green">
+                        <div class="color-preview" style="background: linear-gradient(135deg, #10B981, #059669);"></div>
+                        <span class="color-name">Matrix Green</span>
+                    </div>
+                    <div class="color-option" data-scheme="orange">
+                        <div class="color-preview" style="background: linear-gradient(135deg, #F59E0B, #EF4444);"></div>
+                        <span class="color-name">Fusion Orange</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="dashboard-script.js"></script>
+</body>
+
+</html>
